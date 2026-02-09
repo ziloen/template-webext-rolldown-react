@@ -65,6 +65,8 @@ const buildOptions = {
     'chrome-extension://__MSG_@@extension_id__/*',
   ],
   moduleTypes: {
+    '.jpg': 'asset',
+    '.png': 'asset',
     '.woff': 'asset',
     '.woff2': 'asset',
   },

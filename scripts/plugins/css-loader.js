@@ -54,13 +54,14 @@ export default function cssLoader() {
         const result = postcss.parse(code)
 
         // Add prefix to all URLs in src attributes
-        result.walkDecls('src', (decl, index) => {
-          if (decl.value.startsWith('url(assets/')) {
-            decl.value =
-              `url(${extProtocol}__MSG_@@extension_id__/` + decl.value.slice(4)
-          }
+        result.walkDecls(/^(?:src|background-image)$/, (decl, index) => {
+          decl.value = decl.value.replace(
+            /url\((['"]?)assets\//g,
+            `url($1${extProtocol}__MSG_@@extension_id__/assets/`,
+          )
         })
 
+        // Extract global at-rules
         result.walkAtRules(/^(?:property|font-face)$/, (atRule) => {
           atRule.remove()
           globalRulesRoot.append(atRule.clone())

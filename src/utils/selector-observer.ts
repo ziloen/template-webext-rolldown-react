@@ -5,8 +5,13 @@ const animationName = `observe-${crypto.randomUUID()}`
 let registered = false
 function registerAnimation() {
   if (registered) return
+
   registered = true
+
+  if (document.getElementById('selector-observer-animation')) return
+
   const style = document.createElement('style')
+  style.id = 'selector-observer-animation'
   style.textContent = `@keyframes ${animationName} {}`
   document.head.append(style)
 }
@@ -28,15 +33,19 @@ export function observe(
     style.remove()
   })
 
-  globalThis.addEventListener('animationstart', (e) => {
-    if (e.animationName !== animationName) return
+  globalThis.addEventListener(
+    'animationstart',
+    (e) => {
+      if (e.animationName !== animationName) return
 
-    const target = e.target
-    if (!(target instanceof Element)) return
-    if (target.hasAttribute('data-observer-seen')) return
-    if (!target.matches(selector)) return
+      const target = e.target
+      if (!(target instanceof Element)) return
+      if (target.hasAttribute('data-observer-seen')) return
+      if (!target.matches(selector)) return
 
-    target.setAttribute('data-observer-seen', 'true')
-    listener(target, { signal })
-  })
+      target.setAttribute('data-observer-seen', 'true')
+      listener(target, { signal })
+    },
+    { signal },
+  )
 }
