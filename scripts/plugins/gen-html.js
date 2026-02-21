@@ -17,6 +17,9 @@ import { isDev, r } from '../utils.js'
 export default function genHtml(options) {
   return {
     name: 'gen-html',
+    buildStart() {
+      this.addWatchFile(r(options.templateHtmlPath))
+    },
     async generateBundle(_, bundle) {
       // Generate HTML files for each page
       const templateHtml = await this.fs.readFile(r(options.templateHtmlPath), {

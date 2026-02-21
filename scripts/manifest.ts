@@ -33,24 +33,24 @@ const manifest: MV3 = {
   description: '__MSG_extensionDescription__',
   default_locale: 'en',
   background: isFirefoxEnv
-    ? { scripts: ['./background.js'], type: 'module' }
-    : { service_worker: './background.js', type: 'module' },
+    ? { scripts: ['background.js'], type: 'module' }
+    : { service_worker: 'background.js', type: 'module' },
   permissions: ['sidePanel'],
   optional_permissions: [],
 
-  action: { default_popup: './pages/popup.html' },
-  // devtools_page: './devtools/index.html',
+  action: { default_popup: 'pages/popup.html' },
+  // devtools_page: 'devtools/index.html',
   options_ui: {
-    page: './pages/options.html',
+    page: 'pages/options.html',
     open_in_tab: true,
   },
   side_panel: {
-    default_path: './pages/sidebar.html',
+    default_path: 'pages/sidebar.html',
   },
   content_scripts: [
     {
       matches: ['<all_urls>'],
-      js: ['./content-scripts/start.js'],
+      js: ['content-scripts/start.js'],
       css: ['global-rules.css'],
       run_at: 'document_start',
     },

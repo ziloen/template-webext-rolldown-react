@@ -28,23 +28,6 @@
 
 @layer base {
 
-  /* 重置外部可继承属性（例如 text-align）的影响 */
-  :host {
-    all: initial;
-  }
-
-  /* Chrome 会继承 ::selection 样式，重置 selection 样式，防止外部主题不一致导致看不清 */
-  /* background-color: revert 在 Chrome 中不起作用 */
-  ::selection {
-    background-color: Highlight;
-    color: HighlightText;
-  }
-
-  :host,
-  :root {
-    font-family: --theme(--font-noto-sans-sc);
-  }
-
   *,
   *::before,
   *::after {
@@ -67,4 +50,23 @@
     font-family: --theme(--font-noto-sans-sc);
     font-size: 16px;
   }
+}
+
+/* 重置外部可继承属性（例如 text-align）的影响 */
+/* FIXME: 由于 shadow DOM 的层叠关系，shadow dom 里的 :host 会被外部 * 覆盖 */
+/* 如果使用 all: initial !important; 又会导致其他针对 :host 的样式例如 font-family 也被覆盖 */
+:host {
+  all: initial;
+}
+
+/* Chrome 会继承 ::selection 样式，重置 selection 样式，防止外部主题不一致导致看不清 */
+/* background-color: revert 在 Chrome 中不起作用 */
+::selection {
+  background-color: Highlight;
+  color: HighlightText;
+}
+
+:host,
+:root {
+  font-family: --theme(--font-noto-sans-sc);
 }

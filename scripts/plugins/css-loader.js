@@ -1,6 +1,8 @@
 import tailwindcss from '@tailwindcss/postcss'
+import { fileURLToPath } from 'node:url'
 import postcss from 'postcss'
 import postcssPresetEnv from 'postcss-preset-env'
+import sass from 'sass'
 import { extProtocol, target } from '../utils.js'
 
 /**
@@ -22,24 +24,49 @@ export default function cssLoader() {
     transform: {
       filter: {
         id: {
-          include: /\.css$/,
+          include: /\.(?:css|scss)$/,
           exclude: /node_modules/,
         },
       },
       order: 'post',
-      handler(code, id, meta) {
+      async handler(code, id, meta) {
         // FIXME: tailwind 运行了两次？
         // TODO: support css modules
-        return processor
-          .process(code, {
-            from: id,
-            to: id,
-            map: false,
-          })
-          .then((result) => ({
-            code: result.css,
-            map: { mappings: '' },
-          }))
+
+        const sassResult = id.endsWith('.scss')
+          ? await sass.compileStringAsync(code, {
+              url: new URL(`file://${id}`),
+              sourceMap: false,
+            })
+          : null
+
+        if (sassResult?.loadedUrls.length) {
+          for (const filePath of sassResult.loadedUrls
+            .filter((url) => url.protocol === 'file:')
+            .map((url) => fileURLToPath(url))) {
+            this.addWatchFile(filePath)
+          }
+        }
+
+        const cssCode = sassResult ? sassResult.css : code
+
+        const result = await processor.process(cssCode, {
+          from: id,
+          to: id,
+          map: false,
+        })
+
+        // FIXME: Tailwind v4 会将所有文件都列入 dependency
+        // for (const file of result.messages
+        //   .filter((msg) => msg.type === 'dependency')
+        //   .map((msg) => msg.file)) {
+        //   this.addWatchFile(file)
+        // }
+
+        return {
+          code: result.css,
+          map: { mappings: '' },
+        }
       },
     },
     async generateBundle(_, bundle) {

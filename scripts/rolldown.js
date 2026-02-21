@@ -67,6 +67,7 @@ const buildOptions = {
   moduleTypes: {
     '.jpg': 'asset',
     '.png': 'asset',
+    '.scss': 'css',
     '.woff': 'asset',
     '.woff2': 'asset',
   },
@@ -115,7 +116,11 @@ const buildOptions = {
     // https://github.com/rolldown/rolldown/issues/6733
     cleanDir: false,
     dir: outDir,
-    legalComments: 'inline',
+    comments: {
+      legal: true,
+      annotation: true,
+      jsdoc: false,
+    },
     sourcemap: isDev ? 'inline' : false,
     hashCharacters: 'hex',
     assetFileNames: 'assets/[name].[hash][extname]',
