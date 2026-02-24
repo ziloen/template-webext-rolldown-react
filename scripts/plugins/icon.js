@@ -1,6 +1,5 @@
 import { transform } from '@svgr/core'
 import jsxPlugin from '@svgr/plugin-jsx'
-import { ensureFile } from 'fs-extra'
 import { glob } from 'node:fs/promises'
 import path from 'node:path'
 
@@ -58,7 +57,7 @@ export default function SvgIcon(optiopns) {
           .join('\n') +
         '\n}\n'
 
-      await ensureFile(dtsFilePath)
+      await this.fs.mkdir(path.dirname(dtsFilePath), { recursive: true })
       await this.fs.writeFile(dtsFilePath, dtsContent, { encoding: 'utf8' })
     },
 
