@@ -8,7 +8,7 @@ import path from 'node:path'
  * @returns {Plugin}
  */
 export default function importSuffix() {
-  const filter = /\?(?:url|raw|dataurl)$/
+  const filter = /\?(?:url|raw|inline)$/
 
   return {
     name: 'import-suffix',
@@ -18,20 +18,28 @@ export default function importSuffix() {
         id: filter,
       },
       async handler(source, importer, extraOptions) {
-        const match = source.match(filter)?.[0]
+        const suffix = source.match(filter)?.[0]
 
-        if (!match) {
+        if (!suffix) {
           return null
         }
 
         const resolved = await this.resolve(
-          source.slice(0, source.length - match.length),
+          source.slice(0, source.length - suffix.length),
           importer,
           { skipSelf: true },
         )
 
         if (resolved && !resolved.external) {
-          return resolved.id + match
+          this.addWatchFile(resolved.id)
+
+          return {
+            id: resolved.id + suffix,
+            meta: {
+              resolvedId: resolved.id,
+              suffix: suffix,
+            },
+          }
         }
 
         return null
@@ -44,18 +52,29 @@ export default function importSuffix() {
       },
 
       async handler(id) {
-        const match = id.match(filter)?.[0]
+        const info = this.getModuleInfo(id)
 
-        if (!match) {
-          return null
+        if (!info || !info.meta || !info.meta.suffix) {
+          return
         }
 
-        const filePath = id.slice(0, id.length - match.length)
+        const { resolvedId, suffix } =
+          /** @type {{resolvedId: string, suffix: string}} */ (info.meta)
 
-        this.addWatchFile(filePath)
+        this.addWatchFile(resolvedId)
 
-        const fileBuffer = await this.fs.readFile(filePath)
-        const fileName = path.basename(filePath)
+        if (suffix === '?inline') {
+          return {
+            // FIXME: https://github.com/rolldown/rolldown/issues/5662
+            // code 现在还不支持返回 Buffer，导致 dataurl 的 mimetype 不正确
+            code: await this.fs.readFile(resolvedId, { encoding: 'utf8' }),
+            moduleType: 'dataurl',
+            moduleSideEffects: false,
+          }
+        }
+
+        const fileBuffer = await this.fs.readFile(resolvedId)
+        const fileName = path.basename(resolvedId)
         const referenceId = this.emitFile({
           type: 'asset',
           name: fileName,
