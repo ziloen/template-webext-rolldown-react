@@ -2,12 +2,12 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "node --env-file=.env scripts/rolldown.js",
-    "dev:vite": "vite build --watch",
-    "dev:firefox": "node --env-file=.env --env-file=.env.firefox scripts/rolldown.js",
-    "build": "node --env-file=.env.prod scripts/rolldown.js && web-ext build -s dist/chrome -n chrome.zip",
-    "build:vite": "vite build",
-    "build:firefox": "node --env-file=.env.prod --env-file=.env.firefox scripts/rolldown.js && web-ext build -s dist/firefox -n firefox.xpi",
+    "dev": "cross-env NODE_ENV=development vite build --watch",
+    "build": "cross-env NODE_ENV=production vite build && web-ext build -s dist/chrome -n chrome.zip",
+    "dev:firefox": "cross-env NODE_ENV=development EXTENSION=firefox vite build --watch",
+    "build:firefox": "cross-env NODE_ENV=production EXTENSION=firefox vite build && web-ext build -s dist/chrome -n chrome.zip",
+    "dev:rolldown": "node scripts/rolldown.js",
+    "build:rolldown": "node scripts/rolldown.js && web-ext build -s dist/chrome -n chrome.zip",
     "start:chromium": "web-ext run -t chromium",
     "start:firefox": "web-ext run -t firefox-desktop",
     "typecheck": "tsgo -b --noEmit",
@@ -56,14 +56,14 @@
     "@types/webextension-polyfill": "0.12.5",
     "@typescript/native-preview": "7.0.0-dev.20260312.1",
     "@vitejs/plugin-react": "6.0.0",
-    "@ziloen/eslint-config": "0.1.77",
+    "@ziloen/eslint-config": "0.1.80",
     "@ziloen/tailwind-config": "2.0.19",
     "babel-plugin-annotate-module-pure": "1.0.4",
     "browserslist-to-esbuild": "2.1.1",
     "chokidar": "5.0.0",
     "core-js": "3.48.0",
     "cross-env": "10.1.0",
-    "eslint": "9.39.2",
+    "eslint": "10.0.3",
     "playwright": "1.58.2",
     "postcss-preset-env": "11.2.0",
     "prettier": "3.8.1",
@@ -95,6 +95,7 @@
     }
   },
   "overrides": {
-    "vite": "$vite"
+    "vite": "$vite",
+    "eslint": "$eslint"
   }
 }

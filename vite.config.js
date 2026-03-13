@@ -4,9 +4,8 @@ import { defineConfig } from 'vite'
 import cssLoader from './scripts/plugins/css-loader.js'
 import genHtml from './scripts/plugins/gen-html.js'
 import genManifest from './scripts/plugins/gen-manifest.js'
-import { outDir, r } from './scripts/utils.js'
+import { isCI, isDev, outDir, r } from './scripts/utils.js'
 
-const cwd = process.cwd()
 const target = 'baseline widely available with downstream'
 
 export default defineConfig({
@@ -35,6 +34,10 @@ export default defineConfig({
         'pages/options': r('src/pages/options/main.tsx'),
         'pages/popup': r('src/pages/popup/main.tsx'),
         'pages/sidebar': r('src/pages/sidebar/main.tsx'),
+
+        ...((isCI || isDev) && {
+          'pages/test-page': r('src/pages/test-page/main.tsx'),
+        }),
       },
       output: {
         hashCharacters: 'hex',

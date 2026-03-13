@@ -20,8 +20,8 @@
     "allowUnusedLabels": true,
     "noUncheckedIndexedAccess": true,
     "lib": [
+      // FIXME: background 是 service worker 环境 
       "DOM",
-      "DOM.Iterable",
       "ESNext",
     ],
     "types": [
