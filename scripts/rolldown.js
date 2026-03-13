@@ -1,11 +1,10 @@
-import { babel } from '@rollup/plugin-babel'
 import browserslistToEsbuild from 'browserslist-to-esbuild'
 import { mapValues } from 'es-toolkit'
 import { createRequire } from 'node:module'
 import { styleText } from 'node:util'
 import { build, watch } from 'rolldown'
 import copy from 'rollup-plugin-copy'
-import { PURE_CALLS, pureFunctions } from './plugins/babel.js'
+import { BabelPlugin, pureFunctions } from './plugins/babel.js'
 import cssLoader from './plugins/css-loader.js'
 import genHtml from './plugins/gen-html.js'
 import genManifest from './plugins/gen-manifest.js'
@@ -128,47 +127,7 @@ const buildOptions = {
     minify: !isDev,
   },
   plugins: [
-    // FIXME: use filter to exclude node_modules
-    // TODO: is it possible to transform after jsx and typescript compilation? use renderChunk?
-    babel({
-      babelHelpers: 'bundled',
-      configFile: false,
-      babelrc: false,
-      cloneInputAst: false,
-      skipPreflightCheck: true,
-      targets: target,
-      parserOpts: {
-        plugins: ['jsx', 'typescript'],
-      },
-      presets: [
-        [
-          '@babel/preset-env',
-          {
-            targets: target,
-            useBuiltIns: 'usage',
-            corejs: {
-              version: _require('core-js/package.json').version,
-              proposals: false,
-            },
-            shippedProposals: true,
-            ignoreBrowserslistConfig: true,
-            bugfixes: true,
-            loose: false,
-            modules: false,
-          },
-        ],
-      ],
-      plugins: [
-        [
-          'babel-plugin-annotate-module-pure',
-          {
-            pureCalls: PURE_CALLS,
-          },
-        ],
-      ],
-      extensions: ['.ts', '.tsx', '.js', '.jsx'],
-      exclude: /node_modules/,
-    }),
+    BabelPlugin(),
     copy({
       cwd: cwd,
       flatten: false,

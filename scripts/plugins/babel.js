@@ -1,12 +1,12 @@
-import { transformAsync } from '@babel/core'
 import presetEnv from '@babel/preset-env'
 import { valueToNode } from '@babel/types'
+import babel from '@rolldown/plugin-babel'
 import { difference } from 'es-toolkit'
 import { createRequire } from 'node:module'
 import { target } from '../utils.js'
 
 /**
- * @import { TransformOptions } from "@babel/core"
+ * @import { Plugin } from "rolldown"
  */
 
 /** @type {import("babel-plugin-annotate-module-pure").Options["pureCalls"]} */
@@ -76,36 +76,12 @@ export const PURE_CALLS = {
 }
 
 /**
- * @returns {import("rolldown").Plugin}
+ * @returns {Promise<Plugin>}
  */
 export function BabelPlugin() {
   const _require = createRequire(import.meta.url)
 
-  /** @type {TransformOptions} */
-  const config = {
-    babelrc: false,
-    configFile: false,
-    cloneInputAst: false,
-    browserslistConfigFile: false,
-    targets: target,
-    presets: [
-      [
-        presetEnv,
-        {
-          targets: target,
-          useBuiltIns: 'usage',
-          corejs: {
-            version: _require('core-js/package.json').version,
-            proposals: false,
-          },
-          shippedProposals: true,
-          ignoreBrowserslistConfig: true,
-          bugfixes: true,
-          loose: false,
-          modules: false,
-        },
-      ],
-    ],
+  return babel({
     plugins: [
       [
         'babel-plugin-annotate-module-pure',
@@ -141,25 +117,25 @@ export function BabelPlugin() {
         },
       },
     ],
-  }
-
-  return {
-    name: 'babel',
-    renderChunk: {
-      async handler(code, chunk, outputOptions, meta) {
-        const result = await transformAsync(code, config)
-
-        if (result) {
-          return {
-            code: result.code || '',
-            map: result.map,
-          }
-        }
-
-        return null
-      },
-    },
-  }
+    presets: [
+      [
+        presetEnv,
+        {
+          targets: target,
+          useBuiltIns: 'usage',
+          corejs: {
+            version: _require('core-js/package.json').version,
+            proposals: false,
+          },
+          shippedProposals: true,
+          ignoreBrowserslistConfig: true,
+          bugfixes: true,
+          loose: false,
+          modules: false,
+        },
+      ],
+    ],
+  })
 }
 
 /** @type {string[]} */

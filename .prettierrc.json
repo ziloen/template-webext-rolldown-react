@@ -7,7 +7,6 @@
   "jsxSingleQuote": false,
   "objectWrap": "preserve",
   "plugins": [
-    "@prettier/plugin-oxc",
     "prettier-plugin-organize-imports",
     "prettier-plugin-tailwindcss"
   ],
