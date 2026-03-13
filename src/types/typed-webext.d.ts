@@ -11,13 +11,15 @@ declare module 'typed-webext' {
   interface StreamProtocol {}
 
   interface StorageLocalProtocol {
-    'tips-records': Record<
+    // Pop-up Notification System: One-Click Restore All Notifications
+    tipsRecords: Record<
       string,
       {
-        viewed: boolean
+        viewed: number
         timestamp: number
         priority: number
       }
     >
+    suppressedTips: string[]
   }
 }
