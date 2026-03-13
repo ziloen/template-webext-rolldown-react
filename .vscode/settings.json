@@ -18,15 +18,11 @@
     "source.sortImports",
   ],
   "eslint.format.enable": false,
-  "javascript.preferences.autoImportSpecifierExcludeRegexes": [
+  "js/ts.experimental.useTsgo": false,
+  "js/ts.preferences.autoImportSpecifierExcludeRegexes": [
     "node:console",
     "console"
   ],
-  "prettier.enable": true,
-  "typescript.experimental.useTsgo": false,
-  "typescript.preferences.autoImportSpecifierExcludeRegexes": [
-    "node:console",
-    "console"
-  ],
-  "typescript.preferences.preferTypeOnlyAutoImports": true
+  "js/ts.preferences.preferTypeOnlyAutoImports": true,
+  "prettier.enable": true
 }

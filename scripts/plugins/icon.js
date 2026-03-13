@@ -63,9 +63,7 @@ export default function SvgIcon(optiopns) {
 
     resolveId: {
       filter: {
-        id: {
-          include: /^~icons/,
-        },
+        id: /^~icons/,
       },
       handler(source) {
         // ~icons
@@ -84,9 +82,7 @@ export default function SvgIcon(optiopns) {
 
     load: {
       filter: {
-        id: {
-          include: /^\0~icons/,
-        },
+        id: /^\0~icons/,
       },
       async handler(id) {
         // ~icons

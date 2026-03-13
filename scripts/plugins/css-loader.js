@@ -2,7 +2,7 @@ import tailwindcss from '@tailwindcss/postcss'
 import { fileURLToPath } from 'node:url'
 import postcss from 'postcss'
 import postcssPresetEnv from 'postcss-preset-env'
-import sass from 'sass'
+import { compileStringAsync } from 'sass-embedded'
 import { extProtocol, target } from '../utils.js'
 
 /**
@@ -34,7 +34,7 @@ export default function cssLoader() {
         // TODO: support css modules
 
         const sassResult = id.endsWith('.scss')
-          ? await sass.compileStringAsync(code, {
+          ? await compileStringAsync(code, {
               url: new URL(`file://${id}`),
               sourceMap: false,
             })
@@ -50,21 +50,21 @@ export default function cssLoader() {
 
         const cssCode = sassResult ? sassResult.css : code
 
-        const result = await processor.process(cssCode, {
+        const postcssResult = await processor.process(cssCode, {
           from: id,
           to: id,
           map: false,
         })
 
         // FIXME: Tailwind v4 会将所有文件都列入 dependency
-        // for (const file of result.messages
+        // for (const file of postcssResult.messages
         //   .filter((msg) => msg.type === 'dependency')
         //   .map((msg) => msg.file)) {
         //   this.addWatchFile(file)
         // }
 
         return {
-          code: result.css,
+          code: postcssResult.css,
           map: { mappings: '' },
         }
       },
@@ -83,7 +83,7 @@ export default function cssLoader() {
         // Add prefix to all URLs in src attributes
         result.walkDecls(/^(?:src|background-image)$/, (decl, index) => {
           decl.value = decl.value.replace(
-            /url\((['"]?)assets\//g,
+            /url\((['"]?)\/?assets\//g,
             `url($1${extProtocol}__MSG_@@extension_id__/assets/`,
           )
         })

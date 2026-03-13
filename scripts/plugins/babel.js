@@ -15,7 +15,7 @@ export const PURE_CALLS = {
   classnames: ['default'],
   clsx: ['default', 'clsx'],
   'clsx/lite': ['default', 'clsx'],
-  'es-toolkit': ['mapValues', 'noop'],
+  'es-toolkit': ['clamp', 'mapValues', 'noop'],
   'lodash-es': [
     'clamp',
     'clone',
@@ -71,6 +71,8 @@ export const PURE_CALLS = {
     ['z', 'object'],
     ['z', 'string'],
   ],
+  zustand: ['create'],
+  'zustand/middleware': ['combine'],
 }
 
 /**

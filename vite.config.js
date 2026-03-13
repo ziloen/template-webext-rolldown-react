@@ -39,8 +39,22 @@ export default defineConfig({
       output: {
         hashCharacters: 'hex',
         entryFileNames: '[name].js',
-        cssEntryFileNames: '[name].css',
-        assetFileNames: () => {
+        assetFileNames: (chunkInfo) => {
+          const name = chunkInfo.names[0]
+          const originalFileName = chunkInfo.originalFileNames[0]
+
+          if (!name.endsWith('.css')) {
+            return 'assets/[name]-[hash][extname]'
+          }
+
+          if (originalFileName === 'src/styles/common.css') {
+            return '[name][extname]'
+          }
+
+          if (originalFileName.startsWith('src/pages/')) {
+            return 'pages/[name][extname]'
+          }
+
           return 'assets/[name][extname]'
         },
       },
@@ -50,8 +64,5 @@ export default defineConfig({
     transformer: 'lightningcss',
     devSourcemap: true,
     modules: {},
-  },
-  experimental: {
-    enableNativePlugin: true,
   },
 })
