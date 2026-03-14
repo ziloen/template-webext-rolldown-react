@@ -1,11 +1,12 @@
 import tailwindcss from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react'
+import { mapValues } from 'es-toolkit'
 import { defineConfig } from 'vite'
 import { BabelPlugin } from './scripts/plugins/babel.js'
 import cssLoader from './scripts/plugins/css-loader.js'
 import genHtml from './scripts/plugins/gen-html.js'
 import genManifest from './scripts/plugins/gen-manifest.js'
-import { isCI, isDev, outDir, r } from './scripts/utils.js'
+import { isCI, isDev, isFirefoxEnv, outDir, r } from './scripts/utils.js'
 
 export default defineConfig({
   plugins: [
@@ -16,6 +17,14 @@ export default defineConfig({
     cssLoader(),
     genHtml({ templateHtmlPath: r('src/pages/index.html') }),
   ],
+  define: mapValues(
+    {
+      IS_FIREFOX_ENV: isFirefoxEnv,
+      IS_DEV: isDev,
+      IS_PROD: !isDev,
+    },
+    (v) => JSON.stringify(v),
+  ),
   build: {
     outDir,
     minify: !isDev,

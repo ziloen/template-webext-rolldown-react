@@ -117,24 +117,24 @@ export function BabelPlugin() {
         },
       },
     ],
-    presets: [
-      [
-        presetEnv,
-        {
-          targets: target,
-          useBuiltIns: 'usage',
-          corejs: {
-            version: _require('core-js/package.json').version,
-            proposals: false,
-          },
-          shippedProposals: true,
-          ignoreBrowserslistConfig: true,
-          bugfixes: true,
-          loose: false,
-          modules: false,
-        },
-      ],
-    ],
+    // presets: [
+    //   [
+    //     presetEnv,
+    //     {
+    //       targets: target,
+    //       useBuiltIns: 'usage',
+    //       corejs: {
+    //         version: _require('core-js/package.json').version,
+    //         proposals: false,
+    //       },
+    //       shippedProposals: true,
+    //       ignoreBrowserslistConfig: true,
+    //       bugfixes: true,
+    //       loose: false,
+    //       modules: false,
+    //     },
+    //   ],
+    // ],
   })
 }
 
