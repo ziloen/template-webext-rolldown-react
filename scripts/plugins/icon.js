@@ -41,15 +41,17 @@ export default function SvgIcon(optiopns) {
     name: 'svg-icon',
 
     config(config, env) {
+      if (!config.build?.watch) return
+
       return {
         build: {
           watch: {
             exclude: [
-              ...(Array.isArray(config.build?.watch?.exclude)
-                ? config.build.watch.exclude
-                : config.build?.watch?.exclude
-                  ? [config.build.watch.exclude]
-                  : []),
+              ...(config.build.watch.exclude
+                ? Array.isArray(config.build.watch.exclude)
+                  ? config.build.watch.exclude
+                  : [config.build.watch.exclude]
+                : []),
               dtsFilePath,
             ],
           },
