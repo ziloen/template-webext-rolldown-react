@@ -4,7 +4,7 @@ import { glob } from 'node:fs/promises'
 import path from 'node:path'
 
 /**
- * @import { Plugin } from "rolldown"
+ * @import { Plugin } from "vite"
  */
 
 const moduleId = '~icons'
@@ -39,6 +39,23 @@ export default function SvgIcon(optiopns) {
 
   return {
     name: 'svg-icon',
+
+    config(config, env) {
+      return {
+        build: {
+          watch: {
+            exclude: [
+              ...(Array.isArray(config.build?.watch?.exclude)
+                ? config.build.watch.exclude
+                : config.build?.watch?.exclude
+                  ? [config.build.watch.exclude]
+                  : []),
+              dtsFilePath,
+            ],
+          },
+        },
+      }
+    },
 
     async buildStart(options) {
       // scan the icons directory
