@@ -19,11 +19,11 @@
     "axios": "1.13.6",
     "clsx": "2.1.1",
     "es-toolkit": "1.45.1",
-    "i18next": "25.8.20",
+    "i18next": "25.10.9",
     "motion": "12.38.0",
     "react": "19.2.4",
     "react-dom": "19.2.4",
-    "react-i18next": "16.5.8",
+    "react-i18next": "16.6.6",
     "rxjs": "7.8.2",
     "serialize-error": "13.0.1",
     "typed-webext": "0.7.10",
@@ -47,7 +47,7 @@
     "@types/react": "19.2.14",
     "@types/react-dom": "19.2.3",
     "@types/webextension-polyfill": "0.12.5",
-    "@typescript/native-preview": "7.0.0-dev.20260319.1",
+    "@typescript/native-preview": "7.0.0-dev.20260326.1",
     "@vitejs/plugin-react": "6.0.1",
     "@ziloen/eslint-config": "0.1.80",
     "@ziloen/tailwind-config": "2.0.19",
@@ -55,17 +55,17 @@
     "browserslist-to-esbuild": "2.1.1",
     "core-js": "3.49.0",
     "cross-env": "10.1.0",
-    "eslint": "10.0.3",
-    "oxfmt": "0.41.0",
+    "eslint": "10.1.0",
+    "oxfmt": "0.42.0",
     "playwright": "1.58.2",
     "postcss-preset-env": "11.2.0",
-    "rolldown": "1.0.0-rc.10",
+    "rolldown": "1.0.0-rc.12",
     "rollup-plugin-copy": "3.5.0",
     "svgo": "4.0.1",
     "tailwindcss": "4.2.2",
     "ts-lib-enhance": "1.0.22",
-    "typescript": "5.9.3",
-    "vite": "8.0.1",
+    "typescript": "6.0.2",
+    "vite": "8.0.3",
     "web-ext": "10.0.0"
   },
   "webExt": {
@@ -82,7 +82,7 @@
     }
   },
   "overrides": {
-    "vite": "$vite",
-    "eslint": "$eslint"
+    "eslint": "$eslint",
+    "typescript": "$typescript"
   }
 }

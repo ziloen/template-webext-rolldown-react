@@ -1,4 +1,5 @@
-import { resolve } from 'node:path'
+import fs from 'node:fs/promises'
+import path from 'node:path'
 import process from 'node:process'
 
 const cwd = process.cwd()
@@ -8,7 +9,7 @@ const cwd = process.cwd()
  * @returns {string}
  */
 export function r(...args) {
-  return resolve(cwd, ...args)
+  return path.resolve(cwd, ...args)
 }
 
 export const isDev = process.env.NODE_ENV !== 'production'
@@ -33,4 +34,25 @@ export const extProtocol = isFirefoxEnv
  */
 export function formatBytes(bytes) {
   return `${(bytes / 1024).toFixed(2)} KiB`
+}
+
+/**
+ * @param {string} dir
+ * @returns {Promise<string | undefined>}
+ */
+export function ensureDir(dir) {
+  return fs.mkdir(dir, { recursive: true })
+}
+
+/**
+ * @param {string} filePath
+ * @return {Promise<void>}
+ */
+export async function ensureFile(filePath) {
+  try {
+    await fs.access(filePath)
+  } catch {
+    await fs.mkdir(path.dirname(filePath), { recursive: true })
+    await fs.writeFile(filePath, '')
+  }
 }

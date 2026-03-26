@@ -4,7 +4,7 @@ import { createRequire } from 'node:module'
 import { styleText } from 'node:util'
 import { build, watch } from 'rolldown'
 import copy from 'rollup-plugin-copy'
-import { BabelPlugin, pureFunctions } from './plugins/babel.js'
+import { babel, pureFunctions } from './plugins/babel.js'
 import cssLoader from './plugins/css-loader.js'
 import genHtml from './plugins/gen-html.js'
 import genManifest from './plugins/gen-manifest.js'
@@ -127,7 +127,7 @@ const buildOptions = {
     minify: !isDev,
   },
   plugins: [
-    BabelPlugin(),
+    babel(),
     copy({
       cwd: cwd,
       flatten: false,

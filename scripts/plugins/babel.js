@@ -1,12 +1,13 @@
 import presetEnv from '@babel/preset-env'
 import { valueToNode } from '@babel/types'
-import babel from '@rolldown/plugin-babel'
+import babelPlugin from '@rolldown/plugin-babel'
 import { difference } from 'es-toolkit'
 import { createRequire } from 'node:module'
 import { target } from '../utils.js'
 
 /**
  * @import { Plugin } from "rolldown"
+ * @import { Options as PresetEnvOptions } from "@babel/preset-env"
  */
 
 /** @type {import("babel-plugin-annotate-module-pure").Options["pureCalls"]} */
@@ -78,10 +79,11 @@ export const PURE_CALLS = {
 /**
  * @returns {Promise<Plugin>}
  */
-export function BabelPlugin() {
+export function babel() {
   const _require = createRequire(import.meta.url)
 
-  return babel({
+  return babelPlugin({
+    targets: target,
     plugins: [
       [
         'babel-plugin-annotate-module-pure',
@@ -120,7 +122,7 @@ export function BabelPlugin() {
     // presets: [
     //   [
     //     presetEnv,
-    //     {
+    //     /** @satisfies {PresetEnvOptions} */ ({
     //       targets: target,
     //       useBuiltIns: 'usage',
     //       corejs: {
@@ -130,9 +132,10 @@ export function BabelPlugin() {
     //       shippedProposals: true,
     //       ignoreBrowserslistConfig: true,
     //       bugfixes: true,
-    //       loose: false,
+    //       loose: true,
     //       modules: false,
-    //     },
+    //       debug: false,
+    //     }),
     //   ],
     // ],
   })

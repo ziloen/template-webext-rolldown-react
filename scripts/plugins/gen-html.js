@@ -2,7 +2,7 @@ import path from 'node:path'
 import { isDev, r } from '../utils.js'
 
 /**
- * @import { Plugin } from "rolldown"
+ * @import { Plugin } from "vite"
  */
 
 /**
@@ -26,17 +26,12 @@ export default function genHtml(options) {
         encoding: 'utf8',
       })
 
-      for (const [fileName, chunk] of Object.entries(bundle)) {
+      for (const chunk of Object.values(bundle)) {
         if (chunk.type !== 'chunk' || !chunk.isEntry) continue
-        if (!fileName.startsWith('pages/')) continue
+        if (!chunk.name.startsWith('pages/')) continue
+        if (!chunk.facadeModuleId?.endsWith('.tsx')) continue
 
-        const entryName = path.basename(fileName, path.extname(fileName))
-
-        const htmlName = path.posix.join(
-          path.posix.dirname(fileName),
-          entryName + '.html',
-        )
-
+        const entryName = path.basename(chunk.name)
         const suffix = isDev ? `?t=${Date.now()}` : ''
 
         const htmlCode = templateHtml
@@ -46,7 +41,7 @@ export default function genHtml(options) {
           )
           .replace(
             '<!-- __MAIN_CSS__ -->',
-            bundle[`${path.posix.dirname(fileName)}/${entryName}.css`]
+            bundle[`${chunk.name}.css`]
               ? `<link rel="stylesheet" href="./${entryName}.css${suffix}">`
               : '',
           )
@@ -54,7 +49,7 @@ export default function genHtml(options) {
 
         this.emitFile({
           type: 'asset',
-          fileName: htmlName,
+          fileName: `${chunk.name}.html`,
           source: htmlCode,
           name: 'index.html',
         })

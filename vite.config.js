@@ -2,7 +2,7 @@ import tailwindcss from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react'
 import { mapValues } from 'es-toolkit'
 import { defineConfig } from 'vite'
-import { BabelPlugin } from './scripts/plugins/babel.js'
+import { babel } from './scripts/plugins/babel.js'
 import cssLoader from './scripts/plugins/css-loader.js'
 import genHtml from './scripts/plugins/gen-html.js'
 import genManifest from './scripts/plugins/gen-manifest.js'
@@ -10,7 +10,7 @@ import { isCI, isDev, isFirefoxEnv, outDir, r } from './scripts/utils.js'
 
 export default defineConfig({
   plugins: [
-    BabelPlugin(),
+    babel(),
     react(),
     tailwindcss({ optimize: true }),
     genManifest(r('scripts/manifest.ts')),
@@ -27,6 +27,7 @@ export default defineConfig({
   ),
   build: {
     outDir,
+    sourcemap: isDev ? 'inline' : false,
     minify: !isDev,
     emptyOutDir: true,
     assetsInlineLimit: 0,
@@ -52,12 +53,15 @@ export default defineConfig({
       output: {
         hashCharacters: 'hex',
         entryFileNames: '[name].js',
+        chunkFileNames: isDev ? 'assets/[name].[hash].js' : 'assets/[hash].js',
         assetFileNames: (chunkInfo) => {
           const name = chunkInfo.names[0]
           const originalFileName = chunkInfo.originalFileNames[0]
 
           if (!name.endsWith('.css')) {
-            return 'assets/[name]-[hash][extname]'
+            return isDev
+              ? 'assets/[name].[hash][extname]'
+              : 'assets/[hash][extname]'
           }
 
           if (originalFileName === 'src/styles/common.css') {
