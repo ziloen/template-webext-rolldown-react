@@ -1,6 +1,5 @@
 import tailwindcss from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react'
-import { mapValues } from 'es-toolkit'
 import { defineConfig } from 'vite'
 import { babel } from './scripts/plugins/babel.js'
 import cssLoader from './scripts/plugins/css-loader.js'
@@ -17,14 +16,11 @@ export default defineConfig({
     cssLoader(),
     genHtml({ templateHtmlPath: r('src/pages/index.html') }),
   ],
-  define: mapValues(
-    {
-      IS_FIREFOX_ENV: isFirefoxEnv,
-      IS_DEV: isDev,
-      IS_PROD: !isDev,
-    },
-    (v) => JSON.stringify(v),
-  ),
+  define: {
+    IS_FIREFOX_ENV: isFirefoxEnv,
+    IS_DEV: isDev,
+    IS_PROD: !isDev,
+  },
   build: {
     outDir,
     sourcemap: isDev ? 'inline' : false,
@@ -53,15 +49,13 @@ export default defineConfig({
       output: {
         hashCharacters: 'hex',
         entryFileNames: '[name].js',
-        chunkFileNames: isDev ? 'assets/[name].[hash].js' : 'assets/[hash].js',
+        chunkFileNames: isDev ? 'assets/[name].js' : 'assets/[hash].js',
         assetFileNames: (chunkInfo) => {
           const name = chunkInfo.names[0]
           const originalFileName = chunkInfo.originalFileNames[0]
 
           if (!name.endsWith('.css')) {
-            return isDev
-              ? 'assets/[name].[hash][extname]'
-              : 'assets/[hash][extname]'
+            return isDev ? 'assets/[name][extname]' : 'assets/[hash][extname]'
           }
 
           if (originalFileName === 'src/styles/common.css') {
@@ -80,6 +74,8 @@ export default defineConfig({
   css: {
     transformer: 'lightningcss',
     devSourcemap: true,
-    modules: {},
   },
+  // devtools: {
+  //   enabled: true,
+  // },
 })
