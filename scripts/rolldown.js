@@ -1,6 +1,5 @@
 import browserslistToEsbuild from 'browserslist-to-esbuild'
 import { mapValues } from 'es-toolkit'
-import { createRequire } from 'node:module'
 import { styleText } from 'node:util'
 import { build, watch } from 'rolldown'
 import copy from 'rollup-plugin-copy'
@@ -17,6 +16,7 @@ import {
   isFirefoxEnv,
   outDir,
   r,
+  target,
 } from './utils.js'
 
 /**
@@ -24,9 +24,6 @@ import {
  */
 
 const cwd = process.cwd()
-const target = 'baseline widely available with downstream'
-
-const _require = createRequire(import.meta.url)
 
 // FIXME: 多个 input config 会导致共用的 asset 被重复打包多次
 // 例如如果有多个 entry 都 import 了 a.png，那么 a.png 会被打包多次 a.hash1.png, a.hash2.png

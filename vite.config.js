@@ -1,11 +1,19 @@
 import tailwindcss from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react'
+import browserslistToEsbuild from 'browserslist-to-esbuild'
 import { defineConfig } from 'vite'
-import { babel } from './scripts/plugins/babel.js'
+import { babel, pureFunctions } from './scripts/plugins/babel.js'
 import cssLoader from './scripts/plugins/css-loader.js'
 import genHtml from './scripts/plugins/gen-html.js'
 import genManifest from './scripts/plugins/gen-manifest.js'
-import { isCI, isDev, isFirefoxEnv, outDir, r } from './scripts/utils.js'
+import {
+  isCI,
+  isDev,
+  isFirefoxEnv,
+  outDir,
+  r,
+  target,
+} from './scripts/utils.js'
 
 export default defineConfig({
   plugins: [
@@ -22,6 +30,7 @@ export default defineConfig({
     IS_PROD: !isDev,
   },
   build: {
+    target: browserslistToEsbuild(target),
     outDir,
     sourcemap: isDev ? 'inline' : false,
     minify: !isDev,
@@ -67,6 +76,14 @@ export default defineConfig({
           }
 
           return 'assets/[name][extname]'
+        },
+      },
+      treeshake: {
+        manualPureFunctions: pureFunctions,
+      },
+      transform: {
+        jsx: {
+          development: isDev,
         },
       },
     },
