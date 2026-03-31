@@ -55,14 +55,14 @@ jobs:
         with:
           name: playwright-report
           path: playwright-report/
-          retention-days: 90
+          retention-days: 14
 
       - name: Upload build file
         uses: actions/upload-artifact@v4
         with:
           name: chrome.zip
           path: dist/chrome.zip
-          retention-days: 90
+          retention-days: 14
 
       # - name: Upload metafile
       #   uses: actions/upload-artifact@v4
@@ -71,7 +71,7 @@ jobs:
       #     path: |
       #       dist/meta.json
       #       dist/content-script-meta.json
-      #     retention-days: 90
+      #     retention-days: 14
 
       - name: Build Firefox Extension
         run: npm run build:firefox
@@ -81,4 +81,4 @@ jobs:
         with:
           name: firefox.zip
           path: dist/firefox.xpi
-          retention-days: 90
+          retention-days: 14
