@@ -1,5 +1,4 @@
 import browserslistToEsbuild from 'browserslist-to-esbuild'
-import { mapValues } from 'es-toolkit'
 import { styleText } from 'node:util'
 import { build, watch } from 'rolldown'
 import copy from 'rollup-plugin-copy'
@@ -36,15 +35,11 @@ const buildOptions = {
   platform: 'browser',
   transform: {
     target: browserslistToEsbuild(target),
-    define: mapValues(
-      {
-        IS_FIREFOX_ENV: isFirefoxEnv,
-        IS_DEV: isDev,
-        IS_PROD: !isDev,
-      },
-      (v) => JSON.stringify(v),
-    ),
-    dropLabels: [],
+    define: {
+      IS_FIREFOX_ENV: String(isFirefoxEnv),
+      IS_DEV: String(isDev),
+      IS_PROD: String(!isDev),
+    },
     jsx: {
       development: isDev,
     },
@@ -67,14 +62,6 @@ const buildOptions = {
     '.woff': 'asset',
     '.woff2': 'asset',
   },
-  optimization: {
-    inlineConst: isDev
-      ? false
-      : {
-          mode: 'smart',
-          pass: 3,
-        },
-  },
   treeshake: {
     manualPureFunctions: pureFunctions,
     moduleSideEffects: [
@@ -87,10 +74,7 @@ const buildOptions = {
   logLevel: 'info',
   experimental: {
     attachDebugInfo: isDev ? 'full' : 'none',
-    nativeMagicString: true,
-    // lazyBarrel: true,
   },
-
   input: {
     // TODO: 使用 advancedChunks 来直接提取 common.css
     background: r('src/background/background.ts'),

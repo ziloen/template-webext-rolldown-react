@@ -78,14 +78,8 @@ export default defineConfig({
           return 'assets/[name][extname]'
         },
       },
-      treeshake: {
-        manualPureFunctions: pureFunctions,
-      },
-      transform: {
-        jsx: {
-          development: isDev,
-        },
-      },
+      treeshake: { manualPureFunctions: pureFunctions },
+      transform: { jsx: { development: isDev } },
     },
   },
   css: {
