@@ -20,6 +20,7 @@ type ChromiumManifest = {
 type StrictManifest = {
   permissions?: Permissions[]
   optional_permissions?: OptionalPermissions[]
+  web_accessible_resources?: Manifest.WebExtensionManifestWebAccessibleResourcesC2ItemType[]
 }
 
 type MV3 = Omit<Manifest.WebExtensionManifest, MV2Keys | keyof StrictManifest> &
@@ -37,7 +38,6 @@ const manifest: MV3 = {
     : { service_worker: 'background.js', type: 'module' },
   permissions: ['sidePanel'],
   optional_permissions: [],
-
   action: { default_popup: 'pages/popup.html' },
   // devtools_page: 'devtools/index.html',
   options_ui: {
@@ -51,7 +51,7 @@ const manifest: MV3 = {
     {
       matches: ['<all_urls>'],
       js: ['content-scripts/start.js'],
-      css: ['global-rules.css'],
+      css: ['global.css'],
       run_at: 'document_start',
     },
   ],
@@ -60,8 +60,7 @@ const manifest: MV3 = {
       resources: [
         'assets/*',
         'common.css',
-        'global-rules.css',
-        '**/*.map',
+        'global.css',
         'content-scripts/main.js',
       ],
       matches: ['<all_urls>'],
@@ -73,6 +72,11 @@ if (isDev) {
   manifest.content_security_policy = {
     extension_pages: "script-src 'self' http://localhost:3000",
   }
+
+  manifest.web_accessible_resources?.push({
+    resources: ['*.js.map', '**/*.js.map', '*.css.map', '**/*.css.map'],
+    matches: ['<all_urls>'],
+  })
 }
 
 if (isFirefoxEnv) {
@@ -98,8 +102,15 @@ if (isFirefoxEnv) {
     manifest.permissions = manifest.permissions.filter((p) => p !== 'sidePanel')
   }
 } else {
-  // sidePanel: Chrome 114+
-  manifest.minimum_chrome_version = '114'
+  manifest.minimum_chrome_version = '117'
+
+  if (manifest.sidebar_action) {
+    manifest.side_panel = {
+      default_path: manifest.sidebar_action.default_panel,
+    }
+
+    delete manifest.sidebar_action
+  }
 }
 
 if (isCI) {

@@ -32,7 +32,7 @@ export default defineConfig({
   build: {
     target: browserslistToEsbuild(target),
     outDir,
-    sourcemap: isDev ? 'inline' : false,
+    sourcemap: isDev ? true : false,
     minify: !isDev,
     emptyOutDir: true,
     assetsInlineLimit: 0,

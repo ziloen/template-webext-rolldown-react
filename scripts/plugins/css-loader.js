@@ -101,7 +101,7 @@ export default function cssLoader() {
 
       this.emitFile({
         type: 'asset',
-        fileName: 'global-rules.css',
+        fileName: 'global.css',
         source: globalRulesRoot.toResult().css,
       })
     },
