@@ -1,8 +1,10 @@
+import corejsPackage from 'core-js/package.json' with { type: 'json' }
+
 import presetEnv from '@babel/preset-env'
-import { valueToNode } from '@babel/types'
+import { stringLiteral } from '@babel/types'
 import babelPlugin from '@rolldown/plugin-babel'
+import clsx from 'clsx'
 import { difference } from 'es-toolkit'
-import { createRequire } from 'node:module'
 import { target } from '../utils.js'
 
 /**
@@ -80,8 +82,6 @@ export const PURE_CALLS = {
  * @returns {Promise<Plugin>}
  */
 export function babel() {
-  const _require = createRequire(import.meta.url)
-
   return babelPlugin({
     targets: target,
     plugins: [
@@ -112,32 +112,30 @@ export function babel() {
               classNames.push(arg.node.value)
             }
 
-            const clsx = _require('clsx')
-
-            path.replaceWith(valueToNode(clsx(classNames)))
+            path.replaceWith(stringLiteral(clsx(classNames)))
           },
         },
       },
     ],
-    // presets: [
-    //   [
-    //     presetEnv,
-    //     /** @satisfies {PresetEnvOptions} */ ({
-    //       targets: target,
-    //       useBuiltIns: 'usage',
-    //       corejs: {
-    //         version: _require('core-js/package.json').version,
-    //         proposals: false,
-    //       },
-    //       shippedProposals: true,
-    //       ignoreBrowserslistConfig: true,
-    //       bugfixes: true,
-    //       loose: true,
-    //       modules: false,
-    //       debug: false,
-    //     }),
-    //   ],
-    // ],
+    presets: [
+      [
+        presetEnv,
+        /** @satisfies {PresetEnvOptions} */ ({
+          targets: target,
+          useBuiltIns: 'usage',
+          corejs: {
+            version: corejsPackage.version,
+            proposals: false,
+          },
+          shippedProposals: true,
+          ignoreBrowserslistConfig: true,
+          bugfixes: true,
+          loose: true,
+          modules: false,
+          debug: false,
+        }),
+      ],
+    ],
   })
 }
 

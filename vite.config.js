@@ -3,6 +3,7 @@ import react from '@vitejs/plugin-react'
 import browserslistToEsbuild from 'browserslist-to-esbuild'
 import { defineConfig } from 'vite'
 import { babel, pureFunctions } from './scripts/plugins/babel.js'
+import buildReporter from './scripts/plugins/build-reporter.js'
 import cssLoader from './scripts/plugins/css-loader.js'
 import genHtml from './scripts/plugins/gen-html.js'
 import genManifest from './scripts/plugins/gen-manifest.js'
@@ -23,6 +24,7 @@ export default defineConfig({
     genManifest(r('scripts/manifest.ts')),
     cssLoader(),
     genHtml({ templateHtmlPath: r('src/pages/index.html') }),
+    buildReporter(),
   ],
   define: {
     IS_FIREFOX_ENV: isFirefoxEnv,

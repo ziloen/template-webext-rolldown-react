@@ -15,7 +15,7 @@
     ".vscode/css-data.json"
   ],
   "eslint.format.enable": false,
-  "js/ts.experimental.useTsgo": false,
+  "js/ts.experimental.useTsgo": true,
   "js/ts.preferences.autoImportSpecifierExcludeRegexes": [
     "node:console",
     "console"

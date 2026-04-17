@@ -20,7 +20,9 @@ export const isCI = process.env.CI === 'true'
 
 export const commitShortHash = process.env.GITHUB_SHA?.slice(0, 7) ?? 'local'
 
-export const outDir = isFirefoxEnv ? r('dist/firefox') : r('dist/chrome')
+export const relativeOutDir = isFirefoxEnv ? 'dist/firefox' : 'dist/chrome'
+
+export const outDir = r(relativeOutDir)
 
 export const target = 'baseline widely available with downstream'
 
@@ -55,4 +57,26 @@ export async function ensureFile(filePath) {
     await fs.mkdir(path.dirname(filePath), { recursive: true })
     await fs.writeFile(filePath, '')
   }
+}
+
+/**
+ * @param {string} dir
+ * @returns {Promise<number>}
+ */
+export async function getDirSize(dir) {
+  const entries = await fs.readdir(dir, { withFileTypes: true })
+
+  return (
+    await Promise.all(
+      entries.map(async (entry) => {
+        const entryPath = path.join(dir, entry.name)
+
+        if (entry.isDirectory()) {
+          return getDirSize(entryPath)
+        } else {
+          return (await fs.stat(entryPath)).size
+        }
+      }),
+    )
+  ).reduce((total, size) => total + size)
 }
