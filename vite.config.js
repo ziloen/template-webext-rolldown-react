@@ -42,7 +42,7 @@ export default defineConfig({
     rolldownOptions: {
       input: {
         background: r('src/background/background.ts'),
-        common: r('src/styles/common.css'),
+        styles: r('src/styles/styles.css'),
         'content-scripts/main': r('src/content-scripts/main.tsx'),
         'content-scripts/start': r('src/content-scripts/start.ts'),
         'devtools/devtools': r('src/devtools/devtools.ts'),
@@ -69,7 +69,7 @@ export default defineConfig({
             return isDev ? 'assets/[name][extname]' : 'assets/[hash][extname]'
           }
 
-          if (originalFileName === 'src/styles/common.css') {
+          if (originalFileName === 'src/styles/styles.css') {
             return '[name][extname]'
           }
 

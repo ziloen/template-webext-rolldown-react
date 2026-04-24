@@ -11,7 +11,7 @@ type Props = {
   mode?: 'open' | 'closed'
 }
 
-const commonCSSURL = Browser.runtime.getURL('common.css')
+const commonCSSURL = Browser.runtime.getURL('styles.css')
 
 export function ReactShadow({ children, mode = 'closed' }: Props) {
   const [shadowRoot, setShadowRoot] = useState<ShadowRoot | null>(null)

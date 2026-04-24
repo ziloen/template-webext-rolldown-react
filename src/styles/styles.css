@@ -1,29 +1,4 @@
-@import "@ziloen/tailwind-config/preset.css" theme(inline);
-@import "@fontsource-variable/fira-code/index.css";
-@import "@fontsource-variable/noto-sans-sc/index.css";
-
-
-@theme {
-  --font-noto-sans-sc:
-    'Noto Sans SC Variable',
-    'ui-sans-serif',
-    'system-ui',
-    'sans-serif',
-    'Apple Color Emoji',
-    'Segoe UI Emoji',
-    'Segoe UI Symbol',
-    'Noto Color Emoji';
-  --font-fira-code:
-    'Fira Code Variable',
-    'ui-monospace',
-    'SFMono-Regular',
-    'Menlo',
-    'Monaco',
-    'Consolas',
-    'Liberation Mono',
-    'Courier New',
-    'monospace';
-}
+@import "./tailwind.css";
 
 
 @layer base {

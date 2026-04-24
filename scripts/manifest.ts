@@ -59,7 +59,7 @@ const manifest: MV3 = {
     {
       resources: [
         'assets/*',
-        'common.css',
+        'styles.css',
         'global.css',
         'content-scripts/main.js',
       ],
