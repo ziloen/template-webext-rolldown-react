@@ -45,7 +45,7 @@ export default function genHtml(options) {
               ? `<link rel="stylesheet" href="./${entryName}.css${suffix}">`
               : '',
           )
-          .replace('/common.css', `/common.css${suffix}`)
+          .replace('/styles.css', `/styles.css${suffix}`)
 
         this.emitFile({
           type: 'asset',
