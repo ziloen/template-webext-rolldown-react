@@ -1,9 +1,10 @@
 import { onMessage, sendMessage } from 'typed-webext'
 import Browser from 'webextension-polyfill'
 import { getActiveTab } from '~/utils'
+import { grantAllUrlPermission } from './grant-all-url-permission'
 
 if (IS_FIREFOX_ENV) {
-  import('./grant-all-url-permission')
+  grantAllUrlPermission()
 }
 
 Browser.runtime.onConnect.addListener(() => {

@@ -8,7 +8,7 @@ type Permissions =
   | ChromiumPermissions
 
 type OptionalPermissions = Manifest.OptionalPermission
-type MV2Keys = 'browser_action' | 'user_scripts' | 'page_action'
+type MV2Keys = 'browser_action' | 'user_scripts'
 
 type ChromiumManifest = {
   side_panel?: {
@@ -110,6 +110,11 @@ if (isFirefoxEnv) {
     }
 
     delete manifest.sidebar_action
+  }
+
+  // Chrome does not support page_action in MV3
+  if (manifest.page_action) {
+    delete manifest.page_action
   }
 }
 
