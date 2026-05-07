@@ -26,6 +26,17 @@ declare module 'react' {
 
 declare module 'webextension-polyfill' {
   const sidePanel: typeof chrome.sidePanel | undefined
+
+  namespace Manifest {
+    interface WebExtensionManifestWebAccessibleResourcesC2ItemType {
+      /**
+       * Optional. Defaults to `false`.
+       *
+       * Whether resources to be accessible through the dynamic ID. The dynamic ID is generated per session and regenerated on browser restart or extension reload.
+       */
+      use_dynamic_url?: boolean
+    }
+  }
 }
 
 export {}

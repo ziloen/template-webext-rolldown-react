@@ -18,7 +18,7 @@
     "@base-ui/react": "1.4.1",
     "axios": "1.15.2",
     "clsx": "2.1.1",
-    "es-toolkit": "1.46.0",
+    "es-toolkit": "1.46.1",
     "i18next": "26.0.8",
     "motion": "12.38.0",
     "react": "19.2.5",
@@ -29,7 +29,7 @@
     "typed-webext": "0.7.13",
     "uuid": "14.0.0",
     "webextension-polyfill": "0.12.0",
-    "zod": "4.3.6"
+    "zod": "4.4.1"
   },
   "devDependencies": {
     "@babel/preset-env": "7.29.2",
@@ -47,8 +47,8 @@
     "@types/react": "19.2.14",
     "@types/react-dom": "19.2.3",
     "@types/webextension-polyfill": "0.12.5",
-    "@typescript/native-preview": "7.0.0-dev.20260428.1",
-    "@vitejs/devtools": "0.1.15",
+    "@typescript/native-preview": "7.0.0-dev.20260430.1",
+    "@vitejs/devtools": "0.1.16",
     "@vitejs/plugin-react": "6.0.1",
     "@ziloen/eslint-config": "0.1.82",
     "@ziloen/tailwind-config": "2.0.21",
@@ -60,7 +60,7 @@
     "oxfmt": "0.47.0",
     "playwright": "1.59.1",
     "postcss-preset-env": "11.2.1",
-    "rolldown": "1.0.0-rc.17",
+    "rolldown": "1.0.0-rc.18",
     "rollup-plugin-copy": "3.5.0",
     "svgo": "4.0.1",
     "tailwindcss": "4.2.4",

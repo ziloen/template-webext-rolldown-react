@@ -26,6 +26,9 @@ export default function genHtml(options) {
         encoding: 'utf8',
       })
 
+      // TODO: 支持 react-refresh
+      // import '@vitejs/plugin-react/preamble'
+
       for (const chunk of Object.values(bundle)) {
         if (chunk.type !== 'chunk' || !chunk.isEntry) continue
         if (!chunk.name.startsWith('pages/')) continue

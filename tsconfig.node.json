@@ -11,7 +11,8 @@
     "allowImportingTsExtensions": true, // Allow importing .ts files
     "verbatimModuleSyntax": true, // `import type` for type-only imports
     "types": [
-      "node"
+      "node",
+      "./src/types/modules.d.ts",
     ],
   },
   "include": [

@@ -116,6 +116,15 @@ if (isFirefoxEnv) {
   if (manifest.page_action) {
     delete manifest.page_action
   }
+
+  if (manifest.web_accessible_resources) {
+    manifest.web_accessible_resources = manifest.web_accessible_resources.map(
+      (resource) => ({
+        ...resource,
+        use_dynamic_url: true,
+      }),
+    )
+  }
 }
 
 if (isCI) {
