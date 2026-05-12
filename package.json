@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "@base-ui/react": "1.4.1",
-    "axios": "1.15.2",
+    "axios": "1.16.0",
     "clsx": "2.1.1",
     "es-toolkit": "1.46.1",
     "i18next": "26.0.8",
@@ -29,10 +29,10 @@
     "typed-webext": "0.7.13",
     "uuid": "14.0.0",
     "webextension-polyfill": "0.12.0",
-    "zod": "4.4.1"
+    "zod": "4.4.3"
   },
   "devDependencies": {
-    "@babel/preset-env": "7.29.2",
+    "@babel/preset-env": "7.29.3",
     "@fontsource-variable/fira-code": "5.2.7",
     "@fontsource-variable/noto-sans-sc": "5.2.10",
     "@playwright/test": "1.59.1",
@@ -47,8 +47,8 @@
     "@types/react": "19.2.14",
     "@types/react-dom": "19.2.3",
     "@types/webextension-polyfill": "0.12.5",
-    "@typescript/native-preview": "7.0.0-dev.20260430.1",
-    "@vitejs/devtools": "0.1.16",
+    "@typescript/native-preview": "7.0.0-dev.20260504.1",
+    "@vitejs/devtools": "0.1.18",
     "@vitejs/plugin-react": "6.0.1",
     "@ziloen/eslint-config": "0.1.82",
     "@ziloen/tailwind-config": "2.0.21",
@@ -56,7 +56,7 @@
     "browserslist-to-esbuild": "2.1.1",
     "core-js": "3.49.0",
     "cross-env": "10.1.0",
-    "eslint": "10.2.1",
+    "eslint": "10.3.0",
     "oxfmt": "0.47.0",
     "playwright": "1.59.1",
     "postcss-preset-env": "11.2.1",

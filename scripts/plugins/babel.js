@@ -40,6 +40,7 @@ export const PURE_CALLS = {
   ],
   'mobx-react': ['observer'],
   'mobx-react-lite': ['observer'],
+  motion: ['MotionValue'],
   react: [
     'cloneElement',
     'createContext',

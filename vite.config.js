@@ -43,7 +43,7 @@ export default defineConfig({
       input: {
         background: r('src/background/background.ts'),
         styles: r('src/styles/styles.css'),
-        'content-scripts/main': r('src/content-scripts/main.tsx'),
+        'content-scripts/content-scripts': r('src/content-scripts/content-scripts.tsx'),
         'content-scripts/start': r('src/content-scripts/start.ts'),
         'devtools/devtools': r('src/devtools/devtools.ts'),
 

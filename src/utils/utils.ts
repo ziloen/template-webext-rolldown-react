@@ -7,3 +7,11 @@ export async function getActiveTab() {
   if (!tab) throw new Error('No active tab found')
   return tab
 }
+
+export async function domReady(): Promise<void> {
+  if (document.readyState === 'loading') {
+    await new Promise((resolve) => {
+      document.addEventListener('DOMContentLoaded', resolve, { once: true })
+    })
+  }
+}

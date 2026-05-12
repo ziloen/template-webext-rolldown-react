@@ -61,7 +61,7 @@ const manifest: MV3 = {
         'assets/*',
         'styles.css',
         'global.css',
-        'content-scripts/main.js',
+        'content-scripts/content-scripts.js',
       ],
       matches: ['<all_urls>'],
     },

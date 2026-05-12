@@ -79,7 +79,7 @@ const buildOptions = {
     // TODO: 使用 advancedChunks 来直接提取 common.css
     background: r('src/background/background.ts'),
     common: r('src/styles/common.css'),
-    'content-scripts/main': r('src/content-scripts/main.tsx'),
+    'content-scripts/content-scripts': r('src/content-scripts/content-scripts.tsx'),
     'content-scripts/start': r('src/content-scripts/start.ts'),
     'devtools/devtools': r('src/devtools/devtools.ts'),
     'pages/devtools': r('src/pages/devtools/main.tsx'),

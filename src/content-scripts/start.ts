@@ -1,13 +1,5 @@
-const browser = globalThis.browser ?? globalThis.chrome
-
-if (document.readyState === 'loading') {
-  window.addEventListener(
-    'DOMContentLoaded',
-    () => {
-      import(browser.runtime.getURL('content-scripts/main.js'))
-    },
-    { once: true },
-  )
-} else {
-  import(browser.runtime.getURL('content-scripts/main.js'))
-}
+// Use async IIFE to ensure content scirpt is loaded when using `scripting.executeScript`
+;(async () => {
+  const browser = globalThis.browser ?? globalThis.chrome
+  await import(browser.runtime.getURL('content-scripts/content-scripts.js'))
+})()
