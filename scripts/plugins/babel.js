@@ -3,6 +3,7 @@ import corejsPackage from 'core-js/package.json' with { type: 'json' }
 import presetEnv from '@babel/preset-env'
 import { stringLiteral } from '@babel/types'
 import babelPlugin from '@rolldown/plugin-babel'
+import annotateModulePure from 'babel-plugin-annotate-module-pure'
 import clsx from 'clsx'
 import { difference } from 'es-toolkit'
 import { target } from '../utils.js'
@@ -12,8 +13,8 @@ import { target } from '../utils.js'
  * @import { Options as PresetEnvOptions } from "@babel/preset-env"
  */
 
-/** @type {import("babel-plugin-annotate-module-pure").Options["pureCalls"]} */
-export const PURE_CALLS = {
+/** @type {import("babel-plugin-annotate-module-pure").Options["pureFunctions"]} */
+const modulePureFunctions = {
   axios: [['default', 'create']],
   classnames: ['default'],
   clsx: ['default', 'clsx'],
@@ -87,10 +88,10 @@ export function babel() {
     targets: target,
     plugins: [
       [
-        'babel-plugin-annotate-module-pure',
-        {
-          pureCalls: PURE_CALLS,
-        },
+        annotateModulePure,
+        /** @satisfies {import("babel-plugin-annotate-module-pure").Options} */ ({
+          pureFunctions: modulePureFunctions,
+        }),
       ],
       // Precompute pure `clsx` calls
       {
