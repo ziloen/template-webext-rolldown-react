@@ -8,11 +8,6 @@ import clsx from 'clsx'
 import { difference } from 'es-toolkit'
 import { target } from '../utils.js'
 
-/**
- * @import { Plugin } from "rolldown"
- * @import { Options as PresetEnvOptions } from "@babel/preset-env"
- */
-
 /** @type {import("babel-plugin-annotate-module-pure").Options["pureFunctions"]} */
 const modulePureFunctions = {
   axios: [['default', 'create']],
@@ -81,7 +76,7 @@ const modulePureFunctions = {
 }
 
 /**
- * @returns {Promise<Plugin>}
+ * @returns {Promise<import("rolldown").Plugin>}
  */
 export function babel() {
   return babelPlugin({
@@ -122,7 +117,7 @@ export function babel() {
     presets: [
       [
         presetEnv,
-        /** @satisfies {PresetEnvOptions} */ ({
+        /** @satisfies {import("@babel/preset-env").Options} */ ({
           targets: target,
           useBuiltIns: 'usage',
           corejs: {

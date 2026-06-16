@@ -2,69 +2,13 @@ import postcss from 'postcss'
 import { extProtocol } from '../utils.js'
 
 /**
- * @import { Plugin } from "rolldown"
- */
-
-/**
- * @returns {Plugin}
+ * @returns {import("rolldown").Plugin}
  */
 export default function cssLoader() {
-  // const processor = postcss([
-  //   tailwindcss,
-  //   postcssPresetEnv({ browsers: target }),
-  // ])
   const globalRulesRoot = postcss.root()
 
   return {
     name: 'css-loader',
-    // transform: {
-    //   filter: {
-    //     id: {
-    //       include: /\.(?:css|scss)$/,
-    //       exclude: /node_modules/,
-    //     },
-    //   },
-    //   order: 'post',
-    //   async handler(code, id, meta) {
-    //     // FIXME: tailwind 运行了两次？
-    //     // TODO: support css modules
-
-    //     const sassResult = id.endsWith('.scss')
-    //       ? await compileStringAsync(code, {
-    //           url: new URL(`file://${id}`),
-    //           sourceMap: false,
-    //         })
-    //       : null
-
-    //     if (sassResult?.loadedUrls.length) {
-    //       for (const filePath of sassResult.loadedUrls
-    //         .filter((url) => url.protocol === 'file:')
-    //         .map((url) => fileURLToPath(url))) {
-    //         this.addWatchFile(filePath)
-    //       }
-    //     }
-
-    //     const cssCode = sassResult ? sassResult.css : code
-
-    //     const postcssResult = await processor.process(cssCode, {
-    //       from: id,
-    //       to: id,
-    //       map: false,
-    //     })
-
-    //     // FIXME: Tailwind v4 会将所有文件都列入 dependency
-    //     // for (const file of postcssResult.messages
-    //     //   .filter((msg) => msg.type === 'dependency')
-    //     //   .map((msg) => msg.file)) {
-    //     //   this.addWatchFile(file)
-    //     // }
-
-    //     return {
-    //       code: postcssResult.css,
-    //       map: { mappings: '' },
-    //     }
-    //   },
-    // },
     async generateBundle(_, bundle) {
       for (const [fileName, chunkOrAsset] of Object.entries(bundle)) {
         if (!fileName.endsWith('.css')) continue
@@ -106,4 +50,22 @@ export default function cssLoader() {
       })
     },
   }
+}
+
+/**
+ * Renames all CSS variables with the `--tw-` prefix to `<prefix>` to avoid conflicts with host page tailwind v3 variables.
+ *
+ * @param {import("postcss").Root} root
+ * @param {string} prefix
+ */
+function renameTwPrefix(root, prefix = '--_ext-tw-') {
+  root.walkDecls(/^--tw-/, (decl) => {
+    decl.prop = decl.prop.replace(/^--tw-/, prefix)
+  })
+  root.walkDecls((decl) => {
+    decl.value = decl.value.replace(/--tw-/g, prefix)
+  })
+  root.walkAtRules('property', (atRule) => {
+    atRule.params = atRule.params.replace(/^--tw-/, prefix)
+  })
 }

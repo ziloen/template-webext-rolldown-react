@@ -20,7 +20,7 @@ export default defineConfig({
   plugins: [
     babel(),
     react(),
-    tailwindcss({ optimize: true }),
+    tailwindcss({ optimize: !isDev }),
     genManifest(r('scripts/manifest.ts')),
     cssLoader(),
     genHtml({ templateHtmlPath: r('src/pages/index.html') }),
@@ -35,7 +35,7 @@ export default defineConfig({
     target: browserslistToEsbuild(target),
     outDir,
     sourcemap: isDev,
-    minify: !isDev,
+    minify: isDev ? false : 'oxc',
     emptyOutDir: true,
     assetsInlineLimit: 0,
     reportCompressedSize: false,
@@ -43,7 +43,9 @@ export default defineConfig({
       input: {
         background: r('src/background/background.ts'),
         styles: r('src/styles/styles.css'),
-        'content-scripts/content-scripts': r('src/content-scripts/content-scripts.tsx'),
+        'content-scripts/content-scripts': r(
+          'src/content-scripts/content-scripts.tsx',
+        ),
         'content-scripts/start': r('src/content-scripts/start.ts'),
         'devtools/devtools': r('src/devtools/devtools.ts'),
 

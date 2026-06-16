@@ -25,16 +25,16 @@ const iconPathMap = new Map()
  */
 
 /**
- * @param {PluginOptions} optiopns
+ * @param {PluginOptions} options
  * @returns {Plugin}
  */
-export default function SvgIcon(optiopns) {
+export default function SvgIcon(options) {
   const CWD = process.cwd()
-  const iconNamePrefix = optiopns.iconNamePrefix ?? 'Icon'
-  const iconsDir = path.resolve(CWD, optiopns.iconDir ?? 'src/icons')
+  const iconNamePrefix = options.iconNamePrefix ?? 'Icon'
+  const iconsDir = path.resolve(CWD, options.iconDir ?? 'src/icons')
   const dtsFilePath = path.resolve(
     CWD,
-    optiopns.dtsPath ?? 'src/types/icons.d.ts',
+    options.dtsPath ?? 'src/types/icons.d.ts',
   )
 
   return {
@@ -141,11 +141,9 @@ export default function SvgIcon(optiopns) {
               icon: false,
               typescript: false,
               svgo: false,
+              runtimeConfig: false,
             },
-            {
-              componentName: name,
-              filePath: filePath,
-            },
+            { componentName: name },
           ).catch(() => 'export default () => null')
 
           return {
